@@ -25,8 +25,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 import cors from "cors";
-
 app.use(cors({
-  origin: ["http://localhost:5173", "https://your-frontend.onrender.com"],
-  credentials: true,
+  origin: ["https://patient-frontend.onrender.com"],
+  credentials: true
 }));
