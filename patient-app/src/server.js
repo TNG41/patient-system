@@ -1,4 +1,3 @@
-import cors from "cors";
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
@@ -10,23 +9,29 @@ const patientRoutes = require("./routes/patients");
 
 dotenv.config();
 
+// 🛡 Security Middlewares
 app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(rateLimit({ windowMs: 60 * 1000, max: 200 }));
 
-app.use("/auth", authRoutes);
-app.use("/patients", patientRoutes);
-
-app.get("/", (req, res) => {
-  res.json({ message: "Patient API running" });
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
-
-
+// ✅ Correct CORS placement — allow only your frontend
 app.use(cors({
   origin: ["https://patient-frontend.onrender.com"],
   credentials: true
 }));
+
+app.use(express.json());
+
+// ⚙️ Rate limiting (200 requests per minute)
+app.use(rateLimit({ windowMs: 60 * 1000, max: 200 }));
+
+// 🧩 Routes
+app.use("/auth", authRoutes);
+app.use("/patients", patientRoutes);
+
+// 🩺 Root route for testing
+app.get("/", (req, res) => {
+  res.json({ message: "Patient API running" });
+});
+
+// 🚀 Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
