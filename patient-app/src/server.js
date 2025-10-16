@@ -14,7 +14,7 @@ app.use(helmet());
 
 // ✅ Correct CORS placement — allow only your frontend
 app.use(cors({
-  origin: ["https://patient-frontend.onrender.com"],
+  origin: ["https://patient-system-1.onrender.com"],
   credentials: true
 }));
 
